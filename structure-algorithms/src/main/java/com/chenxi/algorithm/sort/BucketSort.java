@@ -44,9 +44,7 @@ public class BucketSort {
 		int count = 0;
 		for (int i = 0; i < BUCKET_SIZE; i++) {
 			if (null != bucket.get(i)) {
-				Iterator<Integer> iter = bucket.get(i).iterator();
-				while (iter.hasNext()) {
-					Integer d = iter.next();
+				for (Integer d : bucket.get(i)) {
 					array[count] = d;
 					count++;
 				}

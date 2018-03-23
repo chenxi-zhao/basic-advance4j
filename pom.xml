@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.chenxi</groupId>
-    <artifactId>frameworks4j-maven</artifactId>
+    <artifactId>basic-advance4j</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
@@ -15,7 +15,7 @@
         <module>distribute-solutions</module>
     </modules>
 
-    <name>frameworks4j-maven</name>
+    <name>basic-advance4j</name>
     <url>http://maven.apache.org</url>
 
     <properties>
