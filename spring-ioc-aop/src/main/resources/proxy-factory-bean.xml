@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="methodCount" class="com.chenxi.springiocaop.aop.MethodInvokeCountAdvice" />
+
+	<bean id="methodLogger" class="com.chenxi.springiocaop.aop.MethodLoggerAdvice" />
+
+	<bean id="bussinessService" class="com.chenxi.springiocaop.aop.BussinessServiceImpl" />
+
+	<bean id="methodProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>cn.spring.aop.IBussinessService
+			</value>
+		</property>
+
+		<property name="target">
+			<ref bean="bussinessService" />
+		</property>
+
+		<property name="interceptorNames">
+			<list>
+				<value>methodCount</value>
+				<value>methodLogger</value>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>
