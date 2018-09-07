@@ -14,13 +14,27 @@ import java.util.concurrent.TimeUnit;
 public class DistributeLock implements Lock {
     private TimeUnit overTimeUnit;
 
+    public void setOverTimeUnit(TimeUnit overTimeUnit) {
+        this.overTimeUnit = overTimeUnit;
+    }
+
     private long defaultLockTime;
+
+    public void setDefaultLockTime(long defaultLockTime) {
+        this.defaultLockTime = defaultLockTime;
+    }
 
     private LockDao lockDao;
 
+    public void setLockDao(LockDao lockDao) {
+        this.lockDao = lockDao;
+    }
+
+    private ThreadLocal<Integer> stackCount = new ThreadLocal<>();
 
     @Override
     public boolean acquireLocker(String key, boolean failBack) throws Exception {
+        incrStackCount();
         return acquireLocker(key, getUniqueToken(), failBack);
     }
 
@@ -61,7 +75,35 @@ public class DistributeLock implements Lock {
 
     @Override
     public void releaseLocker(String key) throws Exception {
-        lockDao.releaseLocker(key);
+        decrStackCount();
+        if (isOutestCall()) {
+            lockDao.releaseLocker(key);
+        }
+    }
+
+    /**
+     * 每一次调用增加一次栈帧
+     */
+    private void incrStackCount() {
+        Integer count = stackCount.get();
+        if (count == null) {
+            count = 0;
+        }
+        stackCount.set(count + 1);
+    }
+
+    /**
+     * 每一次调用减少一层栈帧
+     */
+    private void decrStackCount() {
+        stackCount.set(stackCount.get() - 1);
+    }
+
+    /**
+     * 是否最外层调用
+     */
+    private boolean isOutestCall() {
+        return stackCount.get() == 1;
     }
 
     /**
