@@ -180,7 +180,7 @@ public class SnowflakeIdWorker {
      * @param lastTimestamp 上次生成ID的时间截
      * @return 当前时间戳
      */
-    protected long tilNextMillis(long lastTimestamp) {
+    private long tilNextMillis(long lastTimestamp) {
         long timestamp = timeGen();
         while (timestamp <= lastTimestamp) {
             timestamp = timeGen();
@@ -193,7 +193,7 @@ public class SnowflakeIdWorker {
      *
      * @return 当前时间(毫秒)
      */
-    protected long timeGen() {
+    private long timeGen() {
         return System.currentTimeMillis();
     }
 
@@ -204,12 +204,12 @@ public class SnowflakeIdWorker {
      */
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 50000; i++) {
+        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(3, 5);
+        for (int i = 0; i < 10; i++) {
             long id = idWorker.nextId();
             System.out.println(Long.toBinaryString(id));
             System.out.println(id);
         }
-        System.out.println((System.nanoTime()-startTime)/1000000+"ms");
+        System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
     }
 }
